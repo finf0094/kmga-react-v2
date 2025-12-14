@@ -203,7 +203,7 @@ const AllowedEmailPage = () => {
                                             <div style={{ display: 'flex', gap: '12px' }}>
                                                 <button
                                                     className="allowed-email__action send"
-                                                    onClick={() => handleCopyToClipboard(`https://kmgasurvey.kz/session/${session.id}`)}
+                                                    onClick={() => handleCopyToClipboard(`${process.env.VITE_API_URL}/session/${session.id}`)}
                                                 >
                                                     Copy link
                                                 </button>
