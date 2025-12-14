@@ -108,13 +108,25 @@ const AllowedEmailPage = () => {
     };
 
     const handleCopyToClipboard = async (sessionLink: string) => {
-        try {
+        if (navigator.clipboard) {
             await navigator.clipboard.writeText(sessionLink);
-            toast.success('Session link copied to clipboard!');
-        } catch (err) {
-            console.error('Failed to copy:', err);
-            toast.error('Failed to copy session link.');
+        } else {
+            fallbackCopy(sessionLink);
         }
+    };
+
+    const fallbackCopy = (text: string) => {
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+            document.execCommand("copy");
+            alert("Скопировано!");
+        } catch (err) {
+            console.error("Fallback: Copy failed", err);
+        }
+        document.body.removeChild(textarea);
     };
 
     if (
