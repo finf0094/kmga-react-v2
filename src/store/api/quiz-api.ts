@@ -101,6 +101,7 @@ export const quizApi = createApi({
                 averageScorePercentage: number;
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 questions: any[];
+                sessionsByYear: { year: number; totalSessions: number; completedSessions: number }[];
             },
             { quizId: string; searchEmail: string }
         >({

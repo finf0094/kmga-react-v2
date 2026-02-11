@@ -216,17 +216,60 @@ const QuestionStatisticsPage = () => {
     const responseStatisticsChartData = useMemo(() => {
         if (!quizStatistics) return null;
 
+        // Мок данные для годов до 2024
+        const mockData: Record<number, { totalSessions: number; completedSessions: number }> = {
+            2019: { totalSessions: 92, completedSessions: 7 },
+            2020: { totalSessions: 83, completedSessions: 8 },
+            2021: { totalSessions: 33, completedSessions: 5 },
+            2022: { totalSessions: 44, completedSessions: 9 },
+            2023: { totalSessions: 40, completedSessions: 11 },
+        };
+
+        // Реальные данные из sessionsByYear (с 2024 года)
+        const realDataByYear = (quizStatistics.sessionsByYear || []).reduce(
+            (acc, item) => {
+                acc[item.year] = {
+                    totalSessions: item.totalSessions,
+                    completedSessions: item.completedSessions,
+                };
+                return acc;
+            },
+            {} as Record<number, { totalSessions: number; completedSessions: number }>,
+        );
+
+        // Определяем годы для отображения (2019-текущий год или последний год из данных)
+        const currentYear = new Date().getFullYear();
+        const years: number[] = [];
+        for (let year = 2019; year <= currentYear; year++) {
+            years.push(year);
+        }
+
+        // Объединяем данные: мок для < 2024, реальные для >= 2024
+        const totalSessionsData = years.map((year) => {
+            if (year < 2024) {
+                return mockData[year]?.totalSessions ?? 0;
+            }
+            return realDataByYear[year]?.totalSessions ?? 0;
+        });
+
+        const completedSessionsData = years.map((year) => {
+            if (year < 2024) {
+                return mockData[year]?.completedSessions ?? 0;
+            }
+            return realDataByYear[year]?.completedSessions ?? 0;
+        });
+
         return {
-            labels: ['2019', '2020', '2021', '2022', '2023', '2024'],
+            labels: years.map(String),
             datasets: [
                 {
                     label: 'Total quantity respondents to whom sent Survey',
-                    data: [92, 83, 33, 44, 40, quizStatistics?.totalSessions],
+                    data: totalSessionsData,
                     backgroundColor: 'rgba(54, 162, 235)',
                 },
                 {
                     label: 'Number of respondents who voted',
-                    data: [7, 8, 5, 9, 11, quizStatistics?.completedSessions],
+                    data: completedSessionsData,
                     backgroundColor: '#ffb138',
                 },
             ],
