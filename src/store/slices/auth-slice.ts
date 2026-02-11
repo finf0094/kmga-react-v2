@@ -36,6 +36,25 @@ export const login = createAsyncThunk(
   }
 );
 
+export const register = createAsyncThunk(
+  "auth/register",
+  async (
+    registerData: { email: string; password: string; passwordRepeat: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await axios.post<IUserResponse>(
+        `${baseUrl}/auth/register`,
+        registerData
+      );
+      return response.data;
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      return rejectWithValue(axiosError.response?.data);
+    }
+  }
+);
+
 export const refreshTokens = createAsyncThunk(
   "auth/refresh-tokens",
   async (_, { rejectWithValue }) => {
