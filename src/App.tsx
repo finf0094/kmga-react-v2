@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import { Layout } from '@components';
-import { LoginPage, RegisterPage, DashboardPage, ResponseStatistics } from '@pages';
+import { LoginPage, DashboardPage, ResponseStatistics } from '@pages';
 import { RequireAuth } from '@components';
 import { Roles } from '@interfaces';
 import AuthSuccess from '@components/AuthSuccess/AuthSuccess.tsx';
@@ -21,7 +21,7 @@ function App() {
                 <Route path="/" element={<Layout />}>
                     {/* default */}
                     <Route path="login" element={<LoginPage />} />
-                    <Route path="register" element={<RegisterPage />} />
+                    {/*<Route path="register" element={<RegisterPage />} />*/}
                     <Route path="auth/success" element={<AuthSuccess />} />
                     <Route path="session/:sessionId" element={<PlayerScreenPage />} />
 
