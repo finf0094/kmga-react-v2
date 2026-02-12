@@ -216,7 +216,7 @@ const QuestionStatisticsPage = () => {
     const responseStatisticsChartData = useMemo(() => {
         if (!quizStatistics) return null;
 
-        // Мок данные для годов до 2024
+        // Мок данные для годов до 2023
         const mockData: Record<number, { totalSessions: number; completedSessions: number }> = {
             2019: { totalSessions: 92, completedSessions: 7 },
             2020: { totalSessions: 83, completedSessions: 8 },
@@ -225,10 +225,11 @@ const QuestionStatisticsPage = () => {
             2023: { totalSessions: 40, completedSessions: 11 },
         };
 
-        // Реальные данные из sessionsByYear (с 2024 года)
+        // Реальные данные из sessionsByYear (сдвигаем на -1 год, т.к. опросник за прошлый год)
         const realDataByYear = (quizStatistics.sessionsByYear || []).reduce(
             (acc, item) => {
-                acc[item.year] = {
+                const displayYear = item.year - 1; // Опросник 2024 года показываем как данные за 2023
+                acc[displayYear] = {
                     totalSessions: item.totalSessions,
                     completedSessions: item.completedSessions,
                 };
@@ -237,26 +238,25 @@ const QuestionStatisticsPage = () => {
             {} as Record<number, { totalSessions: number; completedSessions: number }>,
         );
 
-        // Определяем годы для отображения (2019-текущий год или последний год из данных)
+        // Определяем годы для отображения (2019 до прошлого года)
         const currentYear = new Date().getFullYear();
+        const lastYear = currentYear - 1;
         const years: number[] = [];
-        for (let year = 2019; year <= currentYear; year++) {
+        for (let year = 2019; year <= lastYear; year++) {
             years.push(year);
         }
 
-        // Объединяем данные: мок для < 2024, реальные для >= 2024
+        // Объединяем данные: мок + реальные (если есть в одном году - суммируем)
         const totalSessionsData = years.map((year) => {
-            if (year < 2024) {
-                return mockData[year]?.totalSessions ?? 0;
-            }
-            return realDataByYear[year]?.totalSessions ?? 0;
+            const mockValue = mockData[year]?.totalSessions ?? 0;
+            const realValue = realDataByYear[year]?.totalSessions ?? 0;
+            return mockValue + realValue;
         });
 
         const completedSessionsData = years.map((year) => {
-            if (year < 2024) {
-                return mockData[year]?.completedSessions ?? 0;
-            }
-            return realDataByYear[year]?.completedSessions ?? 0;
+            const mockValue = mockData[year]?.completedSessions ?? 0;
+            const realValue = realDataByYear[year]?.completedSessions ?? 0;
+            return mockValue + realValue;
         });
 
         return {
