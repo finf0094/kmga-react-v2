@@ -119,6 +119,20 @@ export const quizApi = createApi({
                 method: 'GET',
             }),
         }),
+        getCombinedStatistics: builder.mutation<
+            {
+                totalSessions: number;
+                completedSessions: number;
+                sessionsByYear: { year: number; totalSessions: number; completedSessions: number }[];
+            },
+            { quizIds: string[] }
+        >({
+            query: (body) => ({
+                url: `/statistics/combined`,
+                method: 'POST',
+                body,
+            }),
+        }),
     }),
 });
 
@@ -131,4 +145,5 @@ export const {
     useUpdateQuizMutation,
     useGetQuizStatisticsQuery,
     useGetCompanyAveragesQuery,
+    useGetCombinedStatisticsMutation,
 } = quizApi;

@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import { Layout } from '@components';
-import { LoginPage, DashboardPage, ResponseStatistics } from '@pages';
+import { LoginPage, DashboardPage, ResponseStatistics, CombinedStatisticsPage } from '@pages';
 import { RequireAuth } from '@components';
 import { Roles } from '@interfaces';
 import AuthSuccess from '@components/AuthSuccess/AuthSuccess.tsx';
@@ -48,6 +48,11 @@ function App() {
                         <Route
                             path="mail-message"
                             element={<MailMessagePage />}
+                        />
+
+                        <Route
+                            path="combined-statistics"
+                            element={<CombinedStatisticsPage />}
                         />
 
                         <Route

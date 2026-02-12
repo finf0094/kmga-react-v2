@@ -23,6 +23,15 @@
     background: #3abe52;
 }
 
+.dashboard__button--secondary {
+    background: rgba(54, 162, 235);
+    text-decoration: none;
+}
+
+.dashboard__button--secondary:hover {
+    background: rgba(54, 142, 215);
+}
+
 .select-custom {
     width: 300px;
     font-weight: 600;
