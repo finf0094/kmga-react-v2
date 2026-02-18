@@ -203,7 +203,7 @@ const AllowedEmailPage = () => {
                                             <div style={{ display: 'flex', gap: '12px' }}>
                                                 <button
                                                     className="allowed-email__action send"
-                                                    onClick={() => handleCopyToClipboard(`http://5.129.223.49/session/${session.id}`)}
+                                                    onClick={() => handleCopyToClipboard(`http://kmgasurvey.kz/session/${session.id}`)}
                                                 >
                                                     Copy link
                                                 </button>
